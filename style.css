@@ -1,15 +1,47 @@
-:root { --water: #3498db; --panel-bg: rgba(10, 10, 25, 0.9); }
-body { margin: 0; background: #020205; color: white; font-family: sans-serif; overflow: hidden; }
+:root {
+    --water: #3498db;
+    --panel-bg: rgba(10, 10, 25, 0.9);
+}
+
+body {
+    margin: 0;
+    background: #020205;
+    color: white;
+    font-family: sans-serif;
+    overflow: hidden;
+}
 
 .stars {
-    position: fixed; width: 100%; height: 100%; z-index: -1;
-    background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-                      radial-gradient(1px 1px at 150px 200px, #fff, rgba(0,0,0,0));
-    background-repeat: repeat; background-size: 300px 300px;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0, 0, 0, 0)),
+        radial-gradient(1px 1px at 150px 200px, #fff, rgba(0, 0, 0, 0));
+    background-repeat: repeat;
+    background-size: 300px 300px;
 }
 
 .planet {
-    width: 300px; height: 300px; border-radius: 50%;
+    width: 250px;
+    height: 250px;
     background: #7f8c8d;
-    box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8);
-} 
+    border-radius: 50%;
+    margin: 50px auto;
+    box-shadow: inset -20px -20px 50px rgba(0, 0, 0, 0.8);
+
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.05s ease-out;
+}
+
+.planet:active,
+.planet.clicked {
+    transform: scale(0.92);
+}
+
+.shop-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(1);
+}

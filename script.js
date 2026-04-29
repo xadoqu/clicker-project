@@ -1,49 +1,58 @@
 let state = {
-    res: 0,
-    level: 1,
-    buildings: [
-        { id: 0, name: "Vapor Collector", base: 15, rate: 1.15, inc: 1, count: 0 }
-    ],
+  res: 0,
+  level: 1,
+  buildings: [
+    { id: 0, name: "Vapor Collector", base: 15, rate: 1.15, inc: 1, count: 0 },
+  ],
 };
 
 window.onload = () => {
-    document.getElementById("planet").onclick = doClick;
-    render(); 
+  document.getElementById("planet").onclick = doClick;
+  render();
 };
 
 function doClick() {
-    state.res += 1;
-    render();
+  state.res += 1;
+  const p = document.getElementById("planet");
+
+  p.classList.remove("clicked");
+  void p.offsetWidth;
+  p.classList.add("clicked");
+  setTimeout(() => {
+    p.classList.remove("clicked");
+  }, 50);
+
+  render();
 }
 
 function buyBuilding(id) {
-    const b = state.buildings.find(item => item.id === id);
-    const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
+  const b = state.buildings.find((item) => item.id === id);
+  const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
 
-    if (state.res >= cost) {
-        state.res -= cost;
-        b.count++;
-        render();
-    }
+  if (state.res >= cost) {
+    state.res -= cost;
+    b.count++;
+    render();
+  }
 }
 
 function render() {
   document.getElementById("resource-display").innerText = `${state.res} 💧`;
-  const list = document.getElementById('buildings-list');
-    list.innerHTML = ''; 
-    state.buildings.forEach(b => {
-        const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
-        let div = document.createElement('div');
-        div.className = `shop-item ${state.res < cost ? 'disabled' : ''}`;
-        div.innerHTML = `<b>${b.name} (${b.count})</b><br>Cost: ${cost} | +${b.inc}/s`;
-        div.onclick = () => buyBuilding(b.id);
-        list.appendChild(div);
-    });
+  const list = document.getElementById("buildings-list");
+  list.innerHTML = "";
+  state.buildings.forEach((b) => {
+    const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
+    let div = document.createElement("div");
+    div.className = `shop-item ${state.res < cost ? "disabled" : ""}`;
+    div.innerHTML = `<b>${b.name} (${b.count})</b><br>Cost: ${cost} | +${b.inc}/s`;
+    div.onclick = () => buyBuilding(b.id);
+    list.appendChild(div);
+  });
 }
 function tick() {
-    let income = state.buildings.reduce((sum, b) => sum + (b.count * b.inc), 0);
-    state.res += income;
-    render();
+  let income = state.buildings.reduce((sum, b) => sum + b.count * b.inc, 0);
+  state.res += income;
+  render();
 }
 
 setInterval(tick, 1000);
