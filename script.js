@@ -6,6 +6,29 @@ let state = {
   ],
 };
 
+const memoize = (fn, limit = 10) => {
+    const cache = new Map();
+
+    return (...args) => {
+        const key = JSON.stringify(args);
+        
+        if (cache.has(key)) {
+            console.log('%c [Cache Hit] ', 'color: #00ff00', key);
+            return cache.get(key);
+        }
+
+        console.log('%c [Cache Miss] ', 'color: #ffaa00', key);
+        const result = fn(...args);
+        cache.set(key, result);
+        
+        return result;
+    };
+};
+
+const mCalcCost = memoize((base, rate, count) => {
+    return Math.floor(base * Math.pow(rate, count));
+});
+
 window.onload = () => {
   document.getElementById("planet").onclick = doClick;
   render();
