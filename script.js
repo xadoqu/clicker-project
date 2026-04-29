@@ -2,7 +2,7 @@ let state = {
   res: 0,
   level: 1,
   buildings: [
-    { id: 0, name: "Vapor Collector", base: 15, rate: 1.15, inc: 1, count: 0 },
+    { id: 0, name: "Vapor Collector", base: 50, rate: 1.15, inc: 1, count: 0 },
   ],
 };
 
