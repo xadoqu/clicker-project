@@ -64,29 +64,36 @@ function buyBuilding(id) {
   const b = state.buildings.find((item) => item.id === id);
   const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
 
-  if (state.res >= cost) {
-    state.res -= cost;
-    b.count++;
-    if (b.power) {
-      state.clickPower += b.power;
+  const isLimitReached = b.limit && b.count >= b.limit;
+
+    if (state.res >= cost && !isLimitReached) {
+        state.res -= cost;
+        b.count++;
+        
+        if (b.power) {
+            state.clickPower += b.power;
+        }
+        
+        render();
     }
-    render();
-  }
 }
 
 function render() {
   document.getElementById("resource-display").innerText = `${state.res} 💧`;
   const list = document.getElementById("buildings-list");
   list.innerHTML = "";
-  state.buildings.forEach((b) => {
-    const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
-    let div = document.createElement("div");
-    div.className = `shop-item ${state.res < cost ? "disabled" : ""}`;
-    const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
-    div.innerHTML = `<b>${b.name} (${b.count})</b><br>Cost: ${cost} | ${bonusText}`;
-    div.onclick = () => buyBuilding(b.id);
-    list.appendChild(div);
-  });
+  state.buildings.forEach(b => {
+        const cost = mCalcCost(b.base, b.rate, b.count);
+        const isLimitReached = b.limit && b.count >= b.limit;
+        let div = document.createElement('div');
+        div.className = `shop-item ${ (state.res < cost || isLimitReached) ? 'disabled' : '' }`;
+        const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
+        const priceText = isLimitReached ? `<b style="color: red;">MAX LEVEL</b>` : `Cost: ${cost}`;
+        div.innerHTML = `<b>${b.name} (${b.count}${b.limit ? '/' + b.limit : ''})</b><br>${priceText} | ${bonusText}`;
+        
+        div.onclick = () => buyBuilding(b.id);
+        list.appendChild(div);
+    });
 }
 function tick() {
   let income = state.buildings.reduce((sum, b) => sum + b.count * b.inc, 0);
