@@ -1,8 +1,11 @@
 let state = {
   res: 0,
   level: 1,
+  clickPower: 1,
   buildings: [
-    { id: 0, name: "Vapor Collector", base: 50, rate: 1.15, inc: 1, count: 0 },
+    { id: 0, name: "Vapor Collector", base: 50, rate: 1.15, inc: 1, count: 0, limit: 20 },
+    { id: 1, name: "Rain Synthesizer", base: 200, rate: 1.5, inc: 0, count: 0, power: 1, limit: 10 },
+    { id: 2, name: "Cloud Harvester", base: 500, rate: 1.15, inc: 10, count: 0, limit: 10 },
   ],
 };
 
@@ -44,7 +47,7 @@ window.onload = () => {
 };
 
 function doClick() {
-  state.res += 1;
+  state.res += state.clickPower;
   const p = document.getElementById("planet");
 
   p.classList.remove("clicked");
@@ -64,6 +67,9 @@ function buyBuilding(id) {
   if (state.res >= cost) {
     state.res -= cost;
     b.count++;
+    if (b.power) {
+      state.clickPower += b.power;
+    }
     render();
   }
 }
@@ -76,7 +82,8 @@ function render() {
     const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
     let div = document.createElement("div");
     div.className = `shop-item ${state.res < cost ? "disabled" : ""}`;
-    div.innerHTML = `<b>${b.name} (${b.count})</b><br>Cost: ${cost} | +${b.inc}/s`;
+    const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
+    div.innerHTML = `<b>${b.name} (${b.count})</b><br>Cost: ${cost} | ${bonusText}`;
     div.onclick = () => buyBuilding(b.id);
     list.appendChild(div);
   });
