@@ -3,9 +3,34 @@ let state = {
   level: 1,
   clickPower: 1,
   buildings: [
-    { id: 0, name: "Vapor Collector", base: 50, rate: 1.15, inc: 1, count: 0, limit: 20 },
-    { id: 1, name: "Rain Synthesizer", base: 200, rate: 1.5, inc: 0, count: 0, power: 1, limit: 10 },
-    { id: 2, name: "Cloud Harvester", base: 500, rate: 1.15, inc: 10, count: 0, limit: 10 },
+    {
+      id: 0,
+      name: "Vapor Collector",
+      base: 50,
+      rate: 1.15,
+      inc: 1,
+      count: 0,
+      limit: 20,
+    },
+    {
+      id: 1,
+      name: "Rain Synthesizer",
+      base: 200,
+      rate: 1.5,
+      inc: 0,
+      count: 0,
+      power: 1,
+      limit: 10,
+    },
+    {
+      id: 2,
+      name: "Cloud Harvester",
+      base: 500,
+      rate: 1.15,
+      inc: 10,
+      count: 0,
+      limit: 10,
+    },
   ],
 };
 
@@ -66,34 +91,36 @@ function buyBuilding(id) {
 
   const isLimitReached = b.limit && b.count >= b.limit;
 
-    if (state.res >= cost && !isLimitReached) {
-        state.res -= cost;
-        b.count++;
-        
-        if (b.power) {
-            state.clickPower += b.power;
-        }
-        
-        render();
+  if (state.res >= cost && !isLimitReached) {
+    state.res -= cost;
+    b.count++;
+
+    if (b.power) {
+      state.clickPower += b.power;
     }
+
+    render();
+  }
 }
 
 function render() {
   document.getElementById("resource-display").innerText = `${state.res} 💧`;
   const list = document.getElementById("buildings-list");
   list.innerHTML = "";
-  state.buildings.forEach(b => {
-        const cost = mCalcCost(b.base, b.rate, b.count);
-        const isLimitReached = b.limit && b.count >= b.limit;
-        let div = document.createElement('div');
-        div.className = `shop-item ${ (state.res < cost || isLimitReached) ? 'disabled' : '' }`;
-        const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
-        const priceText = isLimitReached ? `<b style="color: red;">MAX LEVEL</b>` : `Cost: ${cost}`;
-        div.innerHTML = `<b>${b.name} (${b.count}${b.limit ? '/' + b.limit : ''})</b><br>${priceText} | ${bonusText}`;
-        
-        div.onclick = () => buyBuilding(b.id);
-        list.appendChild(div);
-    });
+  state.buildings.forEach((b) => {
+    const cost = mCalcCost(b.base, b.rate, b.count);
+    const isLimitReached = b.limit && b.count >= b.limit;
+    let div = document.createElement("div");
+    div.className = `shop-item ${state.res < cost || isLimitReached ? "disabled" : ""}`;
+    const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
+    const priceText = isLimitReached
+      ? `<b style="color: red;">MAX LEVEL</b>`
+      : `Cost: ${cost}`;
+    div.innerHTML = `<b>${b.name} (${b.count}${b.limit ? "/" + b.limit : ""})</b><br>${priceText} | ${bonusText}`;
+
+    div.onclick = () => buyBuilding(b.id);
+    list.appendChild(div);
+  });
 }
 function tick() {
   let income = state.buildings.reduce((sum, b) => sum + b.count * b.inc, 0);
