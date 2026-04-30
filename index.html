@@ -9,21 +9,16 @@
 
 <body>
     <div class="stars"></div>
-    <div class="game-container">
-        <aside class="side-panel left">
-            <div class="stat-box">
-                <h2 id="resource-name">Planet Resources</h2>
-                <p id="resource-display">0 💧</p>
-            </div>
-        </aside>
-        <main class="main-display">
-            <div id="planet" class="planet level-1"></div>
+    <div class="game-layout">
+        <main class="main-area">
+            <div id="resource-display">0 💧</div>
+            <div id="planet" class="planet"></div>
         </main>
-
-        <aside class="side-panel right">
-            <h3>Infrastructure</h3>
+        <aside class="side-panel">
+            <h3 class="panel-title">Infrastructure</h3>
             <div id="buildings-list"></div>
         </aside>
+    </div>
 
     </div>
     <script src="script.js"></script>
