@@ -7,26 +7,35 @@ let state = {
 };
 
 const memoize = (fn, limit = 10) => {
-    const cache = new Map();
+  const cache = new Map();
 
-    return (...args) => {
-        const key = JSON.stringify(args);
-        
-        if (cache.has(key)) {
-            console.log('%c [Cache Hit] ', 'color: #00ff00', key);
-            return cache.get(key);
-        }
+  return (...args) => {
+    const key = JSON.stringify(args);
 
-        console.log('%c [Cache Miss] ', 'color: #ffaa00', key);
-        const result = fn(...args);
-        cache.set(key, result);
-        
-        return result;
-    };
+    if (cache.has(key)) {
+      const val = cache.get(key);
+      cache.delete(key);
+      cache.set(key, val);
+      console.log("%c [Cache Hit] ", "color: #00ff00", key);
+      return val;
+    }
+
+    const result = fn(...args);
+
+    if (cache.size >= limit) {
+      const firstKey = cache.keys().next().value;
+      cache.delete(firstKey);
+      console.log("%c [Evicted] ", "color: #ff0000", firstKey);
+    }
+
+    cache.set(key, result);
+    console.log("%c [Cache Miss] ", "color: #ffaa00", key);
+    return result;
+  };
 };
 
 const mCalcCost = memoize((base, rate, count) => {
-    return Math.floor(base * Math.pow(rate, count));
+  return Math.floor(base * Math.pow(rate, count));
 });
 
 window.onload = () => {
