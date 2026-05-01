@@ -26,14 +26,32 @@ let state = {
       id: 2,
       name: "Cloud Harvester",
       base: 500,
-      rate: 1.15,
+      rate: 1.3,
       inc: 10,
+      count: 0,
+      limit: 10,
+    },
+    {
+      id: 3,
+      name: "Storm Generator",
+      base: 4000,
+      rate: 1.2,
+      inc: 50,
+      count: 0,
+      limit: 10,
+    },
+    {
+      id: 4,
+      name: "Hurricane Engine",
+      base: 20000,
+      rate: 1.2,
+      inc: 200,
       count: 0,
       limit: 10,
     },
   ],
 };
-
+// lab 3
 const memoize = (fn, limit = 10) => {
   const cache = new Map();
 
@@ -61,7 +79,25 @@ const memoize = (fn, limit = 10) => {
     return result;
   };
 };
+//lab 5
+const asyncUtils = {
+  async forEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  },
+};
 
+const saveProgress = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      localStorage.setItem("clicker_save", JSON.stringify(state));
+      resolve(true);
+    }, 500);
+  });
+};
+
+// lab 4
 const EventQueue = {
   logs: [],
   push(message, type = "info") {
@@ -121,8 +157,7 @@ function buyBuilding(id) {
     }
 
     render();
-  }
-  else if (isLimitReached) {
+  } else if (isLimitReached) {
     EventQueue.push(`Warning: ${b.name} limit reached!`, `error`);
   }
 }
