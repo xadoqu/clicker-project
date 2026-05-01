@@ -51,6 +51,13 @@ let state = {
     },
   ],
 };
+if (!state.stats) {
+  state.stats = {
+    totalClicks: 0,
+    startTime: Date.now(),
+    totalResources: 0,
+  };
+}
 // lab 3
 const memoize = (fn, limit = 10) => {
   const cache = new Map();
@@ -137,6 +144,8 @@ window.onload = async () => {
 function doClick() {
   state.res += state.clickPower;
   const p = document.getElementById("planet");
+  state.stats.totalClicks++;
+  state.stats.totalResources++;
 
   p.classList.remove("clicked");
   void p.offsetWidth;
@@ -175,6 +184,7 @@ function render() {
   document.getElementById("resource-display").innerText = `${state.res} 💧`;
   const list = document.getElementById("buildings-list");
   list.innerHTML = "";
+
   state.buildings.forEach((b) => {
     const cost = mCalcCost(b.base, b.rate, b.count);
     const isLimitReached = b.limit && b.count >= b.limit;
@@ -189,10 +199,21 @@ function render() {
     div.onclick = () => buyBuilding(b.id);
     list.appendChild(div);
   });
+
+  const statsContent = document.getElementById("stats-content");
+  if (statsContent && state.stats) {
+    const playTime = Math.floor((Date.now() - state.stats.startTime) / 1000);
+    statsContent.innerHTML = `
+      <p>Total Clicks: ${state.stats.totalClicks}</p>
+      <p>Time in Space: ${playTime}s</p>
+      <p>Total Earned: ${state.stats.totalResources}💧</p>
+    `;
+  }
 }
 function tick() {
   let income = state.buildings.reduce((sum, b) => sum + b.count * b.inc, 0);
   state.res += income;
+  state.stats.totalResources += income;
   render();
 }
 
