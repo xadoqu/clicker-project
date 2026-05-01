@@ -62,6 +62,27 @@ const memoize = (fn, limit = 10) => {
   };
 };
 
+const EventQueue = {
+  logs: [],
+  push(message, type = "info") {
+    const entry = {
+      text: message,
+      type,
+      time: new Date().toLocaleTimeString(),
+    };
+    this.logs.push(entry);
+    this.render();
+  },
+  render() {
+    const container = document.getElementById("event-log");
+    const last = this.logs[this.logs.length - 1];
+    let div = document.createElement("div");
+    div.className = `log-entry ${last.type}`;
+    div.innerText = `[${last.time}] ${last.text}`;
+    container.prepend(div);
+  },
+};
+
 const mCalcCost = memoize((base, rate, count) => {
   return Math.floor(base * Math.pow(rate, count));
 });
@@ -112,7 +133,7 @@ function render() {
     const isLimitReached = b.limit && b.count >= b.limit;
     let div = document.createElement("div");
     div.className = `shop-item ${state.res < cost || isLimitReached ? "disabled" : ""}`;
-    const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click`;
+    const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click power`;
     const priceText = isLimitReached
       ? `<b style="color: red;">MAX LEVEL</b>`
       : `Cost: ${cost}`;
