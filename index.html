@@ -15,10 +15,31 @@
             <div id="planet" class="planet"></div>
         </main>
         <aside class="side-panel">
-            <h3 class="panel-title">Infrastructure</h3>
-            <div id="buildings-list"></div>
+            <nav class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('infra')">📦</button>
+                <button class="tab-btn" onclick="switchTab('upgrades')">⚡</button>
+                <button class="tab-btn" onclick="switchTab('achievements')">🏆</button>
+                <button class="tab-btn" onclick="switchTab('stats')">📊</button>
+            </nav>
             <div class="event-log" id="event-log">
                 <div class="log-entry">System initialized...</div>
+            </div>
+            <div id="infra-tab" class="tab-content active">
+                <h3 class="panel-title">Infrastructure</h3>
+                <div id="buildings-list"></div>
+            </div>
+
+            <div id="upgrades-tab" class="tab-content">
+                <h3 class="panel-title">Upgrades</h3>
+                <p style="text-align:center; color: #666;">Research in progress...</p>
+            </div>
+            <div id="achievements-tab" class="tab-content">
+                <h3 class="panel-title">Achievements</h3>
+                <p style="text-align:center; color: #666;">No medals yet...</p>
+            </div>
+            <div id="stats-tab" class="tab-content">
+                <h3 class="panel-title">Statistics</h3>
+                <div id="stats-content" class="shop-item"></div>
             </div>
         </aside>
     </div>

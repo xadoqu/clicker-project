@@ -197,3 +197,17 @@ function tick() {
 }
 
 setInterval(tick, 1000);
+
+function switchTab(tabName) {
+  document
+    .querySelectorAll(".tab-btn")
+    .forEach((btn) => btn.classList.remove("active"));
+  document
+    .querySelectorAll(".tab-content")
+    .forEach((content) => content.classList.remove("active"));
+
+  event.currentTarget.classList.add("active");
+  document.getElementById(`${tabName}-tab`).classList.add("active");
+
+  render();
+}
