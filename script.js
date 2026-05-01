@@ -123,7 +123,13 @@ const mCalcCost = memoize((base, rate, count) => {
   return Math.floor(base * Math.pow(rate, count));
 });
 
-window.onload = () => {
+window.onload = async () => {
+  const saved = localStorage.getItem("clicker_save");
+  if (saved) {
+    state = JSON.parse(saved);
+    EventQueue.push("Welcome back, Captain!", "success");
+  }
+
   document.getElementById("planet").onclick = doClick;
   render();
 };
@@ -142,7 +148,7 @@ function doClick() {
   render();
 }
 
-function buyBuilding(id) {
+async function buyBuilding(id) {
   const b = state.buildings.find((item) => item.id === id);
   const cost = Math.floor(b.base * Math.pow(b.rate, b.count));
 
@@ -157,6 +163,9 @@ function buyBuilding(id) {
     }
 
     render();
+    EventQueue.push(`Saving progress...`, "info");
+    await saveProgress();
+    EventQueue.push(`Progress saved!`, "success");
   } else if (isLimitReached) {
     EventQueue.push(`Warning: ${b.name} limit reached!`, `error`);
   }
