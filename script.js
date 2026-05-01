@@ -115,12 +115,15 @@ function buyBuilding(id) {
   if (state.res >= cost && !isLimitReached) {
     state.res -= cost;
     b.count++;
-
+    EventQueue.push(`Bought ${b.name} (Total: ${b.count})`, "success");
     if (b.power) {
       state.clickPower += b.power;
     }
 
     render();
+  }
+  else if (isLimitReached) {
+    EventQueue.push(`Warning: ${b.name} limit reached!`, `error`);
   }
 }
 
