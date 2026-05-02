@@ -190,3 +190,59 @@ body {
 .tab-content.active {
     display: block;
 }
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+
+.achievement-card {
+    width: 80px;
+    height: 80px;
+    background: #000;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #333;
+    position: relative;
+    transition: all 0.4s ease;
+    cursor: help;
+}
+
+.achievement-card.unlocked {
+    background: var(--panel-bg);
+    color: var(--water);
+    border-color: var(--water);
+    text-shadow: 0 0 10px var(--water);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.achievement-card::after {
+    content: attr(data-hint);
+    position: absolute;
+    bottom: 110%; 
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #4fb9ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--water);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none; 
+    transition: 0.2s ease-out;
+    z-index: 1000; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.achievement-card:hover::after {
+    opacity: 1;
+    bottom: 120%; 
+}

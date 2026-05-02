@@ -51,6 +51,34 @@ let state = {
     },
   ],
 };
+
+const achievementsData = {
+    'ach-clicks1k': { condition: () => state.stats.totalClicks >= 1000, unlocked: false },
+    'ach-clicks10k': { condition: () => state.stats.totalClicks >= 10000, unlocked: false },
+    'ach-clicks100k': { condition: () => state.stats.totalClicks >= 100000, unlocked: false },
+    'ach-thousand': { condition: () => state.res >= 1000, unlocked: false },
+    'ach-million': { condition: () => state.res >= 1000000, unlocked: false },
+    'ach-billion': { condition: () => state.res >= 1000000000, unlocked: false },
+    'ach-time-10min': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 600, unlocked: false }, 
+    'ach-time-1hr': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 3600, unlocked: false },
+    'ach-time-24hr': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 86400, unlocked: false },
+};
+
+function checkAchievements() {
+    Object.keys(achievementsData).forEach(id => {
+        let ach = achievementsData[id];
+        if (!ach.unlocked && ach.condition()) {
+            ach.unlocked = true;
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.add('unlocked');
+                element.innerText = '🏆';
+                EventQueue.push(`Achievement Unlocked!`, 'success');
+            }
+        }
+    });
+}
+
 if (!state.stats) {
   state.stats = {
     totalClicks: 0,
@@ -146,7 +174,7 @@ function doClick() {
   const p = document.getElementById("planet");
   state.stats.totalClicks++;
   state.stats.totalResources++;
-
+  checkAchievements();
   p.classList.remove("clicked");
   void p.offsetWidth;
   p.classList.add("clicked");
@@ -222,6 +250,7 @@ function tick() {
   let income = state.buildings.reduce((sum, b) => sum + b.count * b.inc, 0);
   state.res += income;
   state.stats.totalResources += income;
+  checkAchievements();
   render();
 }
 
