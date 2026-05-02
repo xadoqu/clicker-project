@@ -11,8 +11,14 @@
     <div class="stars"></div>
     <div class="game-layout">
         <main class="main-area">
-            <div id="resource-display">0 💧</div>
-            <div id="planet" class="planet"></div>
+            <div class="resource-container">
+                <div id="resource-display">0 💧</div>
+                <div class="income-display">+0/s</div>
+            </div>
+
+            <div class="planet-container">
+                <div class="planet" id="planet"></div>
+            </div>
         </main>
         <aside class="side-panel">
             <nav class="tabs-nav">
@@ -44,7 +50,6 @@
         </aside>
     </div>
 
-    </div>
     <script src="script.js"></script>
 </body>
 

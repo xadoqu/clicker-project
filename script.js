@@ -181,10 +181,18 @@ async function buyBuilding(id) {
 }
 
 function render() {
-  document.getElementById("resource-display").innerText = `${state.res} 💧`;
+  document.getElementById("resource-display").innerText =
+    `${Math.floor(state.res)} 💧`;
   const list = document.getElementById("buildings-list");
   list.innerHTML = "";
-
+  let currentIncome = 0;
+  state.buildings.forEach((b) => {
+    if (b.inc) currentIncome += b.inc * b.count;
+  });
+  const incDisplay = document.querySelector(".income-display");
+  if (incDisplay) {
+    incDisplay.innerText = `+${currentIncome}/s`;
+  }
   state.buildings.forEach((b) => {
     const cost = mCalcCost(b.base, b.rate, b.count);
     const isLimitReached = b.limit && b.count >= b.limit;
