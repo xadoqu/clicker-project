@@ -87,18 +87,67 @@ body {
 .planet {
     width: 440px;
     height: 440px;
-    background: radial-gradient(circle at 30% 30%, #7f8c8d, #2c3e50);
     border-radius: 50%;
-    box-shadow: inset -25px -25px 60px rgba(0, 0, 0, 0.9),
-        0 0 50px rgba(52, 152, 219, 0.3);
+    position: relative;
+    overflow: hidden;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 1s ease-in-out;/
 }
 
-.planet:active,
+.planet.stage-0 {
+    background: radial-gradient(circle at 30% 30%, #7f8c8d, #2c3e50);
+    box-shadow: inset -25px -25px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(52, 152, 219, 0.1);
+}
+
+.planet.stage-1 {
+    background: radial-gradient(circle at 30% 30%, #4fb9ff, #1a5f7a);
+    box-shadow: inset -25px -25px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(52, 152, 219, 0.5);
+}
+
+.planet.stage-2 {
+    background: radial-gradient(circle at 30% 30%, #4fb9ff, #1a5f7a);
+    box-shadow: inset -25px -25px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(46, 204, 113, 0.3);
+}
+
+.planet.stage-2::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 30% 35%, #2ecc71 0%, #27ae60 20%, transparent 30%),
+        radial-gradient(circle at 70% 30%, #27ae60 0%, #1e8449 25%, transparent 35%),
+        radial-gradient(circle at 50% 75%, #1e8449 0%, #2ecc71 22%, transparent 32%);
+    opacity: 1;
+    filter: none;
+}
+
+.planet.stage-2::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
 .planet.clicked {
-    transform: scale(0.95);
+    animation: click-bump 0.1s ease-out;
+}
+
+@keyframes click-bump {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .side-panel {
@@ -225,7 +274,7 @@ body {
 .achievement-card::after {
     content: attr(data-hint);
     position: absolute;
-    bottom: 110%; 
+    bottom: 110%;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.95);
@@ -236,13 +285,84 @@ body {
     font-size: 0.75rem;
     white-space: nowrap;
     opacity: 0;
-    pointer-events: none; 
+    pointer-events: none;
     transition: 0.2s ease-out;
-    z-index: 1000; 
+    z-index: 1000;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .achievement-card:hover::after {
     opacity: 1;
-    bottom: 120%; 
+    bottom: 120%;
+}
+
+.evolving {
+    animation: evolve-glow 1.5s ease-out, shake 0.5s ease-in-out;
+}
+
+@keyframes evolve-glow {
+    0% {
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 100px rgba(255, 255, 255, 0.8), inset 0 0 50px white;
+    }
+
+    100% {
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(2deg);
+    }
+
+    75% {
+        transform: rotate(-2deg);
+    }
+}
+
+.evolution-text {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: #06d525;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(79, 255, 91, 0.8), 0 0 40px white;
+    z-index: 100;
+    pointer-events: none;
+    animation: fade-up-out 2.5s forwards;
+    white-space: nowrap;
+}
+
+@keyframes fade-up-out {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -150%);
+    }
 }

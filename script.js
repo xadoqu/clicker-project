@@ -29,7 +29,7 @@ let state = {
       rate: 1.3,
       inc: 10,
       count: 0,
-      limit: 10,
+      limit: 20,
     },
     {
       id: 3,
@@ -38,7 +38,7 @@ let state = {
       rate: 1.2,
       inc: 50,
       count: 0,
-      limit: 10,
+      limit: 20,
     },
     {
       id: 4,
@@ -47,36 +47,100 @@ let state = {
       rate: 1.2,
       inc: 200,
       count: 0,
-      limit: 10,
+      limit: 20,
     },
   ],
 };
 
 const achievementsData = {
-    'ach-clicks1k': { condition: () => state.stats.totalClicks >= 1000, unlocked: false },
-    'ach-clicks10k': { condition: () => state.stats.totalClicks >= 10000, unlocked: false },
-    'ach-clicks100k': { condition: () => state.stats.totalClicks >= 100000, unlocked: false },
-    'ach-thousand': { condition: () => state.res >= 1000, unlocked: false },
-    'ach-million': { condition: () => state.res >= 1000000, unlocked: false },
-    'ach-billion': { condition: () => state.res >= 1000000000, unlocked: false },
-    'ach-time-10min': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 600, unlocked: false }, 
-    'ach-time-1hr': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 3600, unlocked: false },
-    'ach-time-24hr': { condition: () => (Date.now() - state.stats.startTime) / 1000 >= 86400, unlocked: false },
+  "ach-clicks1k": {
+    condition: () => state.stats.totalClicks >= 1000,
+    unlocked: false,
+  },
+  "ach-clicks10k": {
+    condition: () => state.stats.totalClicks >= 10000,
+    unlocked: false,
+  },
+  "ach-clicks100k": {
+    condition: () => state.stats.totalClicks >= 100000,
+    unlocked: false,
+  },
+  "ach-thousand": { condition: () => state.res >= 1000, unlocked: false },
+  "ach-million": { condition: () => state.res >= 1000000, unlocked: false },
+  "ach-billion": { condition: () => state.res >= 1000000000, unlocked: false },
+  "ach-time-10min": {
+    condition: () => (Date.now() - state.stats.startTime) / 1000 >= 600,
+    unlocked: false,
+  },
+  "ach-time-1hr": {
+    condition: () => (Date.now() - state.stats.startTime) / 1000 >= 3600,
+    unlocked: false,
+  },
+  "ach-time-24hr": {
+    condition: () => (Date.now() - state.stats.startTime) / 1000 >= 86400,
+    unlocked: false,
+  },
 };
 
 function checkAchievements() {
-    Object.keys(achievementsData).forEach(id => {
-        let ach = achievementsData[id];
-        if (!ach.unlocked && ach.condition()) {
-            ach.unlocked = true;
-            const element = document.getElementById(id);
-            if (element) {
-                element.classList.add('unlocked');
-                element.innerText = '🏆';
-                EventQueue.push(`Achievement Unlocked!`, 'success');
-            }
-        }
-    });
+  Object.keys(achievementsData).forEach((id) => {
+    let ach = achievementsData[id];
+    if (!ach.unlocked && ach.condition()) {
+      ach.unlocked = true;
+      const element = document.getElementById(id);
+      if (element) {
+        element.classList.add("unlocked");
+        element.innerText = "🏆";
+        EventQueue.push(`Achievement Unlocked!`, "success");
+      }
+    }
+  });
+}
+
+const evolutionStages = [
+  { threshold: 0, class: "stage-0", name: "Empty World" },
+  { threshold: 50, class: "stage-1", name: "Deep Sea Life" },
+  { threshold: 100, class: "stage-2", name: "First Islands" },
+];
+
+let lastStageIndex = -1;
+
+function updateEvolution() {
+  const planetEl = document.getElementById("planet");
+  if (!planetEl) return;
+
+  let currentStageIndex = 0;
+  evolutionStages.forEach((stage, index) => {
+    if (state.stats.totalResources >= stage.threshold) {
+      currentStageIndex = index;
+    }
+  });
+
+  const currentStage = evolutionStages[currentStageIndex];
+
+  if (lastStageIndex !== -1 && lastStageIndex !== currentStageIndex) {
+    planetEl.classList.remove("evolving");
+    void planetEl.offsetWidth;
+    planetEl.classList.add("evolving");
+
+    const evoText = document.createElement("div");
+    evoText.className = "evolution-text";
+    evoText.innerText = "PLANET EVOLVED!";
+
+    document.querySelector(".main-area").appendChild(evoText);
+
+    setTimeout(() => {
+      evoText.remove();
+      planetEl.classList.remove("evolving");
+    }, 2500);
+
+    EventQueue.push(`Planet evolved: ${currentStage.name}!`, "success");
+  }
+
+  evolutionStages.forEach((s) => planetEl.classList.remove(s.class));
+  planetEl.classList.add(currentStage.class);
+
+  lastStageIndex = currentStageIndex;
 }
 
 if (!state.stats) {
@@ -234,6 +298,7 @@ function render() {
 
     div.onclick = () => buyBuilding(b.id);
     list.appendChild(div);
+    updateEvolution();
   });
 
   const statsContent = document.getElementById("stats-content");
