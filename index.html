@@ -20,10 +20,17 @@
                 <div class="planet" id="planet"></div>
             </div>
         </main>
+        <div class="evo-panel">
+            <h3>Evolution</h3>
+            <div id="next-evo-info">
+                <p id="evo-name">Next: Deep Sea Life</p>
+                <p id="evo-buff">Buff: Vapor Collector x2 income</p>
+                <button id="buy-evo-btn" onclick="buyEvolution()">Evolve (Cost: 5000 💧)</button>
+            </div>
+        </div>
         <aside class="side-panel">
             <nav class="tabs-nav">
                 <button class="tab-btn active" onclick="switchTab('infra')">📦</button>
-                <button class="tab-btn" onclick="switchTab('upgrades')">⚡</button>
                 <button class="tab-btn" onclick="switchTab('achievements')">🏆</button>
                 <button class="tab-btn" onclick="switchTab('stats')">📊</button>
             </nav>
@@ -33,11 +40,6 @@
             <div id="infra-tab" class="tab-content active">
                 <h3 class="panel-title">Infrastructure</h3>
                 <div id="buildings-list"></div>
-            </div>
-
-            <div id="upgrades-tab" class="tab-content">
-                <h3 class="panel-title">Upgrades</h3>
-                <p style="text-align:center; color: #666;">Research in progress...</p>
             </div>
             <div id="achievements-tab" class="tab-content">
                 <div class="achievements-grid">
