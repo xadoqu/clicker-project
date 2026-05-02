@@ -99,8 +99,8 @@ function checkAchievements() {
 
 const evolutionStages = [
   { threshold: 0, class: "stage-0", name: "Empty World" },
-  { threshold: 50, class: "stage-1", name: "Deep Sea Life" },
-  { threshold: 100, class: "stage-2", name: "First Islands" },
+  { threshold: 5000, class: "stage-1", name: "Deep Sea Life" },
+  { threshold: 15000, class: "stage-2", name: "First Islands" },
 ];
 
 let lastStageIndex = -1;
