@@ -315,7 +315,7 @@ async function buyBuilding(id) {
     state.res -= cost;
     b.count++;
     if (b.power) state.clickPower += b.power;
-
+    EventQueue.push(`Bought ${b.name} (Total: ${b.count})`, "success");
     render();
     await saveProgress();
   } else if (isLimitReached) {
