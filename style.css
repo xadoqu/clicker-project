@@ -84,18 +84,17 @@ body {
     margin-bottom: 80px;
 }
 
-.planet {
+#planet {
     width: 440px;
     height: 440px;
     border-radius: 50%;
+    margin: 0 auto;
     position: relative;
     cursor: pointer;
-    user-select: none;
-    transition: all 1s ease-in-out;
-    z-index: 5;
-    background: radial-gradient(circle at 30% 30%, #7f8c8d, #2c3e50);
-    box-shadow: inset -25px -25px 60px rgba(0, 0, 0, 0.9),
-        0 0 50px rgba(52, 152, 219, 0.1);
+    transition: all 0.8s ease;
+    overflow: hidden;
+    background-color: #222;
+    box-shadow: inset -10px -10px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 139, 253, 0.2);
 }
 
 .planet.stage-0 {
@@ -266,7 +265,6 @@ body {
     position: relative;
     transition: all 0.4s ease;
     cursor: help;
-    overflow-x: hidden;
 }
 
 .achievement-card.unlocked {
@@ -380,7 +378,7 @@ body {
     transform: translateY(-50%);
     width: 200px;
     background: rgba(13, 17, 23, 0.8);
-    border: 1px solid rgba(56, 139, 253, 0.2); 
+    border: 1px solid rgba(56, 139, 253, 0.2);
     padding: 15px;
     border-radius: 12px;
     text-align: center;

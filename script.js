@@ -91,9 +91,18 @@ const achievementsData = {
     condition: () => state.stats.totalClicks >= 100000,
     unlocked: false,
   },
-  "ach-thousand": { condition: () => state.res >= 1000, unlocked: false },
-  "ach-million": { condition: () => state.res >= 1000000, unlocked: false },
-  "ach-billion": { condition: () => state.res >= 1000000000, unlocked: false },
+  "ach-thousand": {
+    condition: () => state.res >= 1000,
+    unlocked: false,
+  },
+  "ach-million": {
+    condition: () => state.res >= 1000000,
+    unlocked: false,
+  },
+  "ach-billion": {
+    condition: () => state.res >= 1000000000,
+    unlocked: false,
+  },
   "ach-time-10min": {
     condition: () => state.stats.timePlayed >= 600,
     unlocked: false,
@@ -111,17 +120,27 @@ const achievementsData = {
 function checkAchievements() {
   Object.keys(achievementsData).forEach((id) => {
     let ach = achievementsData[id];
+    const element = document.getElementById(id);
+    if (!element) return;
     if (!ach.unlocked && ach.condition()) {
       ach.unlocked = true;
-      const element = document.getElementById(id);
-      if (element) {
-        element.classList.add("unlocked");
-        element.innerText = "🏆";
-        EventQueue.push(`Achievement Unlocked!`, "success");
-      }
+      element.classList.add("unlocked");
+      element.innerText = "🏆";
+      element.title = ach.name;
+      EventQueue.push(`Achievement Unlocked: ${ach.name}`, "success");
+    } else if (ach.unlocked) {
+      element.classList.add("unlocked");
+      element.innerText = "🏆";
+      element.title = ach.name;
     }
   });
 }
+
+window.evolutionStages = [
+  { threshold: 0, name: "Start", class: "stage-0" },
+  { threshold: 5000, name: "Deep Sea Life", class: "stage-1" },
+  { threshold: 15000, name: "First Islands", class: "stage-2" },
+];
 
 const evoUpgrades = [
   {
@@ -150,10 +169,18 @@ function buyEvolution() {
     state.res -= nextEvo.threshold;
     nextEvo.apply();
     state.evoLevel++;
+    if (window.evolutionStages && evolutionStages[state.evoLevel]) {
+      state.stats.totalResources = Math.max(
+        state.stats.totalResources,
+        evolutionStages[state.evoLevel].threshold,
+      );
+    }
     if (typeof triggerEvoEffects === "function")
       triggerEvoEffects(nextEvo.name);
     render();
     updateEvoUI();
+    EventQueue.push(`Planet evolved to: ${nextEvo.name}!`, "success");
+    saveProgress();
   } else {
     EventQueue.push("Not enough resources for evolution!", "error");
   }
@@ -188,7 +215,7 @@ function updateEvoUI() {
     progressBar.style.width = percent + "%";
   }
   if (btnEl) {
-    btnEl.innerText = `Evolve (Cost: ${next.threshold})`;
+    btnEl.innerText = `Evolve`;
     if (state.res >= next.threshold) {
       btnEl.classList.add("visible");
     } else {
@@ -290,6 +317,7 @@ window.onload = async () => {
 
   document.getElementById("planet").onclick = doClick;
   render();
+  checkAchievements();
   updateEvoUI();
 };
 
@@ -366,7 +394,7 @@ function render() {
     `;
   }
   updateEvolution();
-  updateEvoUI(); 
+  updateEvoUI();
 }
 
 function tick() {
