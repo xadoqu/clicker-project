@@ -476,15 +476,22 @@ function switchTab(tabName) {
 
 async function startStreaming() {
   const streamer = new ResourceStreamer(state);
+  initStreamUI();
   for await (const log of streamer.generateLogs()) {
     console.log(`[Stream] Income: ${log.income} at ${log.time}`);
     state.lastStreamLog = log;
+    const dataSpan = document.getElementById("stream-data");
+    if (dataSpan) {
+      dataSpan.innerText = `+${log.income.toFixed(1)}/s [${log.time}]`;
+    }
   }
 }
 
 function initStreamUI() {
-    const streamDiv = document.createElement('div');
-    streamDiv.id = 'stream-display';
-    streamDiv.innerHTML = `📡 LINK: <span id="stream-data">CONNECTING...</span>`;
-    document.body.appendChild(streamDiv);
+  const streamDiv = document.createElement("div");
+  streamDiv.id = "stream-display";
+  streamDiv.innerHTML = `📡 LINK: <span id="stream-data">CONNECTING...</span>`;
+  document.body.appendChild(streamDiv);
 }
+
+startStreaming();
