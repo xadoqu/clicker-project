@@ -8,66 +8,120 @@ let state = {
     {
       id: 0,
       name: "Powerful Click",
-      base: 100,
-      rate: 2,
+      base: 150,
+      rate: 2.5,
       inc: 0,
       count: 0,
-      power: 1,
-      limit: 10,
+      power: 2,
+      limit: 30,
     },
     {
       id: 1,
-      name: "Vapor Collector",
+      name: "Manual Pump",
       base: 50,
-      rate: 1.3,
+      rate: 1.1,
       inc: 1,
       count: 0,
-      limit: 20,
+      limit: 30,
     },
     {
       id: 2,
-      name: "Cloud Harvester",
-      base: 500,
-      rate: 1.3,
-      inc: 10,
+      name: "Deep Sea Drill",
+      base: 250,
+      rate: 1.12,
+      inc: 5,
       count: 0,
-      limit: 20,
+      limit: 30,
     },
     {
       id: 3,
-      name: "Storm Generator",
-      base: 4000,
-      rate: 1.3,
-      inc: 50,
+      name: "Atmospheric Condenser",
+      base: 1200,
+      rate: 1.14,
+      inc: 15,
       count: 0,
-      limit: 20,
+      limit: 30,
     },
     {
       id: 4,
-      name: "Hurricane Engine",
-      base: 20000,
-      rate: 1.3,
-      inc: 200,
+      name: "Cloud Seeding Array",
+      base: 8500,
+      rate: 1.15,
+      inc: 60,
       count: 0,
-      limit: 20,
+      limit: 30,
     },
     {
       id: 5,
-      name: "Atmosphere Stabilizer",
-      base: 100000,
-      rate: 1.3,
-      inc: 1000,
+      name: "Geothermal Desalinator",
+      base: 45000,
+      rate: 1.16,
+      inc: 280,
       count: 0,
-      limit: 20,
+      limit: 30,
     },
     {
       id: 6,
-      name: "Orbital Station",
-      base: 500000,
-      rate: 1.3,
-      inc: 5000,
+      name: "Arctic Melter",
+      base: 280000,
+      rate: 1.17,
+      inc: 1400,
       count: 0,
-      limit: 20,
+      limit: 30,
+    },
+    {
+      id: 7,
+      name: "Orbital Ice Harvester",
+      base: 1500000,
+      rate: 1.18,
+      inc: 6500,
+      count: 0,
+      limit: 30,
+    },
+    {
+      id: 8,
+      name: "Tectonic Aquifer Extractor",
+      base: 10000000,
+      rate: 1.2,
+      inc: 35000,
+      count: 0,
+      limit: 30,
+    },
+    {
+      id: 9,
+      name: "Comet Redirector",
+      base: 75000000,
+      rate: 1.25,
+      inc: 180000,
+      count: 0,
+      limit: 30,
+    },
+    {
+      id: 10,
+      name: "Molecular H2O Assembler",
+      base: 450000000,
+      rate: 1.22,
+      inc: 950000,
+      count: 0,
+      limit: 30,
+    },
+    {
+      id: 11,
+      name: "Quantum Water Synthesizer",
+      base: 2500000000,
+      rate: 1.23,
+      inc: 4200000,
+      count: 0,
+      limit: 30,
+    },
+    {
+      id: 12,
+      name: "Planetary Hydration Core ",
+      base: 15000000000,
+      rate: 1.25,
+      inc: 20000000,
+      count: 0,
+      limit: 30,
     },
   ],
   stats: {
@@ -78,7 +132,7 @@ let state = {
   },
 };
 
-const clickSound = new Audio("click.mp3");
+const clickSound = new Audio("src/sfx/click.mp3");
 clickSound.volume = 0.05;
 
 const achievementsData = {
@@ -157,6 +211,8 @@ window.evolutionStages = [
   { threshold: 0, name: "Start", class: "stage-0" },
   { threshold: 5000, name: "Deep Sea Life", class: "stage-1" },
   { threshold: 15000, name: "First Islands", class: "stage-2" },
+  { threshold: 30000, name: "Origin of Animals", class: "stage-3" },
+  { threshold: 70000, name: "First Hominids", class: "stage-4" },
 ];
 
 const evoUpgrades = [
@@ -174,6 +230,22 @@ const evoUpgrades = [
     buffText: "Cloud Harvester x1.5",
     apply: () => {
       state.buildings[2].inc *= 1.5;
+    },
+  },
+  {
+    threshold: 30000,
+    name: "Origin of Animals (30000)",
+    buffText: "Space Station x1.5",
+    apply: () => {
+      state.buildings[3].inc *= 1.5;
+    },
+  },
+  {
+    threshold: 70000,
+    name: "First Hominids (70000)",
+    buffText: "Click Power x2",
+    apply: () => {
+      state.globalMultiplier *= 2;
     },
   },
 ];
@@ -249,13 +321,10 @@ function updateEvolution() {
     { threshold: 0, name: "Start", class: "stage-0" },
   ];
   if (!planetEl) return;
-
-  let currentStageIndex = 0;
-  stages.forEach((stage, index) => {
-    if (state.stats.totalResources >= stage.threshold) {
-      currentStageIndex = index;
-    }
-  });
+  let currentStageIndex = state.evoLevel || 0;
+  if (currentStageIndex >= stages.length) {
+    currentStageIndex = stages.length - 1;
+  }
 
   const currentStage = stages[currentStageIndex];
 
@@ -338,7 +407,7 @@ window.onload = async () => {
   updateEvoUI();
 };
 
-const CLICK_SOUND_SRC = "click.mp3";
+const CLICK_SOUND_SRC = "src/sfx/click.mp3";
 function doClick(event) {
   const sound = new Audio(CLICK_SOUND_SRC);
   sound.volume = 0.05;
@@ -363,6 +432,7 @@ const evolutionIcons = {
   0: "💧",
   1: "🏝️",
   2: " 🙉",
+  3: "🧬",
 };
 
 function createFloatingText(value) {
@@ -396,7 +466,7 @@ async function buyBuilding(id) {
   if (state.res >= cost && !isLimitReached) {
     state.res -= cost;
     b.count++;
-    if (b.power) state.clickPower += b.power;
+    if (b.power) state.clickPower *= 2;
     EventQueue.push(`Bought ${b.name} (Total: ${b.count})`, "success");
     render();
     await saveProgress();
@@ -426,7 +496,7 @@ function render() {
       if (isLocked) {
         div.innerHTML = `<b>???</b><br>Locked (Buy previous building)`;
       } else {
-        const bonusText = b.inc > 0 ? `+${b.inc}/s` : `+${b.power} click power`;
+        const bonusText = b.inc > 0 ? `+${b.inc}/s` : `x${b.power} click power`;
         const countText = b.limit ? `${b.count}/${b.limit}` : b.count;
         const priceText = isLimitReached
           ? `<b style="color: red;">MAX LEVEL</b>`
