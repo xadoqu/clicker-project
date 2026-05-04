@@ -12,10 +12,12 @@
     <div class="game-layout">
         <main class="main-area">
             <div class="resource-container">
-                <div id="resource-display">0 💧</div>
+                <div id="resource-display">
+                    <span id="resource-count">0</span> 
+                    <span id="resource-emoji">💧</span>
+                </div>
                 <div class="income-display">+0/s</div>
             </div>
-
             <div class="planet-container">
                 <div class="planet" id="planet"></div>
             </div>
@@ -25,7 +27,7 @@
             <div id="next-evo-info">
                 <p id="evo-name">Next: Deep Sea Life</p>
                 <p id="evo-buff">Buff: Vapor Collector x2 income</p>
-                <button id="buy-evo-btn" onclick="buyEvolution()">Evolve (Cost: 5000 💧)</button>
+                <button id="buy-evo-btn" onclick="buyEvolution()">Evolve (Cost: 5000)</button>
             </div>
         </div>
         <aside class="side-panel">
@@ -52,6 +54,7 @@
                     <div class="achievement-card" id="ach-time-10min" data-hint="Spectator">?</div>
                     <div class="achievement-card" id="ach-time-1hr" data-hint="Sojourner">?</div>
                     <div class="achievement-card" id="ach-time-24hr" data-hint="Astronaut">?</div>
+                    <div class="achievement-card" id="ach-evo1" data-hint="Not Empty">?</div>
                 </div>
             </div>
             <div id="stats-tab" class="tab-content">

@@ -80,39 +80,53 @@ let state = {
 
 const achievementsData = {
   "ach-clicks1k": {
+    name: "Start Clicker",
     condition: () => state.stats.totalClicks >= 1000,
     unlocked: false,
   },
   "ach-clicks10k": {
+    name: "Clicking Machine",
     condition: () => state.stats.totalClicks >= 10000,
     unlocked: false,
   },
   "ach-clicks100k": {
+    name: "Clicking Legend",
     condition: () => state.stats.totalClicks >= 100000,
     unlocked: false,
   },
   "ach-thousand": {
+    name: "First Thousand",
     condition: () => state.res >= 1000,
     unlocked: false,
   },
   "ach-million": {
+    name: "Millionaire",
     condition: () => state.res >= 1000000,
     unlocked: false,
   },
   "ach-billion": {
+    name: "Billionaire",
     condition: () => state.res >= 1000000000,
     unlocked: false,
   },
   "ach-time-10min": {
+    name: "Spectator",
     condition: () => state.stats.timePlayed >= 600,
     unlocked: false,
   },
   "ach-time-1hr": {
+    name: "Sojourner",
     condition: () => state.stats.timePlayed >= 3600,
     unlocked: false,
   },
   "ach-time-24hr": {
+    name: "Astronaut",
     condition: () => state.stats.timePlayed >= 86400,
+    unlocked: false,
+  },
+  "ach-evo1": {
+    name: "Not Empty",
+    condition: () => state.evoLevel >= 1,
     unlocked: false,
   },
 };
@@ -290,8 +304,7 @@ const EventQueue = {
       type,
       time: new Date().toLocaleTimeString(),
     });
-    this.render();
-  },
+    this.render(); }, 
   render() {
     const container = document.getElementById("event-log");
     if (!container) return;
@@ -335,6 +348,12 @@ function doClick() {
   render();
 }
 
+const evolutionIcons = {
+    0: "💧",
+    1: "🏝️",
+    2: " 🙉",
+};
+
 function createFloatingText(value) {
     const planet = document.getElementById("planet");
     if (!planet) return;
@@ -377,8 +396,9 @@ async function buyBuilding(id) {
 }
 
 function render() {
+  const currentEmoji = evolutionIcons[state.evoLevel] || "💧";
   const resDisplay = document.getElementById("resource-display");
-  if (resDisplay) resDisplay.innerText = `${Math.floor(state.res)} 💧`;
+  if (resDisplay) resDisplay.innerText = `${Math.floor(state.res)} ${currentEmoji}`;
   const list = document.getElementById("buildings-list");
   if (list) {
     list.innerHTML = "";
@@ -415,7 +435,7 @@ function render() {
     statsContent.innerHTML = `
       <p>Total Clicks: <span id="stat-clicks">${state.stats.totalClicks}</span></p>
       <p>Time in Space: <span id="stat-time">${state.stats.timePlayed}s</span></p>
-      <p>Total Earned: <span id="stat-earned">${Math.floor(state.stats.totalResources)}</span>💧</p>
+      <p>Total Earned: <span id="stat-earned">${Math.floor(state.stats.totalResources)}</span> ${currentEmoji}</p>
     `;
   }
   updateEvolution();
