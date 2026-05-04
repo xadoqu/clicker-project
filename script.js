@@ -481,3 +481,10 @@ async function startStreaming() {
     state.lastStreamLog = log;
   }
 }
+
+function initStreamUI() {
+    const streamDiv = document.createElement('div');
+    streamDiv.id = 'stream-display';
+    streamDiv.innerHTML = `📡 LINK: <span id="stream-data">CONNECTING...</span>`;
+    document.body.appendChild(streamDiv);
+}
