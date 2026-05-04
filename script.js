@@ -325,6 +325,7 @@ function doClick() {
   state.res += state.clickPower;
   state.stats.totalClicks++;
   state.stats.totalResources += state.clickPower;
+  createFloatingText(state.clickPower);
   const p = document.getElementById("planet");
   p.classList.remove("clicked");
   void p.offsetWidth;
@@ -332,6 +333,30 @@ function doClick() {
 
   checkAchievements();
   render();
+}
+
+function createFloatingText(value) {
+    const planet = document.getElementById("planet");
+    if (!planet) return;
+
+
+    const rect = planet.getBoundingClientRect();
+    
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const offsetX = (Math.random() - 0.5) * 500; 
+    const offsetY = (Math.random() - 0.5) * 200; 
+    const text = document.createElement('div');
+    text.className = 'floating-text';
+    text.innerText = `+${value}`;
+    text.style.left = `${centerX + offsetX}px`;
+    text.style.top = `${centerY + offsetY}px`;
+    
+    document.body.appendChild(text);
+    
+    setTimeout(() => {
+        text.remove();
+    }, 800);
 }
 
 async function buyBuilding(id) {
