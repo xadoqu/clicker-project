@@ -304,7 +304,8 @@ const EventQueue = {
       type,
       time: new Date().toLocaleTimeString(),
     });
-    this.render(); }, 
+    this.render();
+  },
   render() {
     const container = document.getElementById("event-log");
     if (!container) return;
@@ -349,33 +350,32 @@ function doClick() {
 }
 
 const evolutionIcons = {
-    0: "💧",
-    1: "🏝️",
-    2: " 🙉",
+  0: "💧",
+  1: "🏝️",
+  2: " 🙉",
 };
 
 function createFloatingText(value) {
-    const planet = document.getElementById("planet");
-    if (!planet) return;
+  const planet = document.getElementById("planet");
+  if (!planet) return;
 
+  const rect = planet.getBoundingClientRect();
 
-    const rect = planet.getBoundingClientRect();
-    
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const offsetX = (Math.random() - 0.5) * 500; 
-    const offsetY = (Math.random() - 0.5) * 200; 
-    const text = document.createElement('div');
-    text.className = 'floating-text';
-    text.innerText = `+${value}`;
-    text.style.left = `${centerX + offsetX}px`;
-    text.style.top = `${centerY + offsetY}px`;
-    
-    document.body.appendChild(text);
-    
-    setTimeout(() => {
-        text.remove();
-    }, 800);
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  const offsetX = (Math.random() - 0.5) * 500;
+  const offsetY = (Math.random() - 0.5) * 200;
+  const text = document.createElement("div");
+  text.className = "floating-text";
+  text.innerText = `+${value}`;
+  text.style.left = `${centerX + offsetX}px`;
+  text.style.top = `${centerY + offsetY}px`;
+
+  document.body.appendChild(text);
+
+  setTimeout(() => {
+    text.remove();
+  }, 800);
 }
 
 async function buyBuilding(id) {
@@ -398,7 +398,8 @@ async function buyBuilding(id) {
 function render() {
   const currentEmoji = evolutionIcons[state.evoLevel] || "💧";
   const resDisplay = document.getElementById("resource-display");
-  if (resDisplay) resDisplay.innerText = `${Math.floor(state.res)} ${currentEmoji}`;
+  if (resDisplay)
+    resDisplay.innerText = `${Math.floor(state.res)} ${currentEmoji}`;
   const list = document.getElementById("buildings-list");
   if (list) {
     list.innerHTML = "";
@@ -471,4 +472,12 @@ function switchTab(tabName) {
   if (event) event.currentTarget.classList.add("active");
   document.getElementById(`${tabName}-tab`).classList.add("active");
   render();
+}
+
+async function startStreaming() {
+  const streamer = new ResourceStreamer(state);
+  for await (const log of streamer.generateLogs()) {
+    console.log(`[Stream] Income: ${log.income} at ${log.time}`);
+    state.lastStreamLog = log;
+  }
 }
