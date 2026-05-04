@@ -78,6 +78,9 @@ let state = {
   },
 };
 
+const clickSound = new Audio("click.mp3");
+clickSound.volume = 0.05;
+
 const achievementsData = {
   "ach-clicks1k": {
     name: "Start Clicker",
@@ -335,7 +338,14 @@ window.onload = async () => {
   updateEvoUI();
 };
 
-function doClick() {
+const CLICK_SOUND_SRC = "click.mp3";
+function doClick(event) {
+  const sound = new Audio(CLICK_SOUND_SRC);
+  sound.volume = 0.05;
+  sound.play().catch((err) => console.log("Browser blocked click sound:", err));
+  sound.onended = () => {
+    sound.remove();
+  };
   state.res += state.clickPower;
   state.stats.totalClicks++;
   state.stats.totalResources += state.clickPower;
