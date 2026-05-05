@@ -4,12 +4,17 @@
     --border: rgba(52, 152, 219, 0.3);
 }
 
+html {
+    font-size: 80%;
+}
+
 body {
     margin: 0;
     background: #020205;
     color: white;
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
+    zoom: 1;
 }
 
 .stars {
@@ -85,8 +90,8 @@ body {
 }
 
 #planet {
-    width: 440px;
-    height: 440px;
+    width: 330px;
+    height: 330px;
     border-radius: 50%;
     margin: 0 auto;
     position: relative;
@@ -164,6 +169,146 @@ body {
 }
 
 .planet.stage-3::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+#planet.stage-4 {
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.7) 85%),
+        url('src/img/earth_stage4.png') !important;
+    background-size: 105% 105% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset -20px -20px 50px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(70, 150, 255, 0.4),
+        0 0 2px 2px rgba(52, 152, 219, 0.2);
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+.planet.stage-4::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+#planet.stage-5 {
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.7) 85%),
+        url('src/img/earth_stage5.png') !important;
+    background-size: 105% 105% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset -20px -20px 50px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(70, 150, 255, 0.4),
+        0 0 2px 2px rgba(52, 152, 219, 0.2);
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+.planet.stage-5::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+#planet.stage-6 {
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.7) 85%),
+        url('src/img/earth_stage6.png') !important;
+    background-size: 105% 105% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset -20px -20px 50px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(70, 150, 255, 0.4),
+        0 0 2px 2px rgba(52, 152, 219, 0.2);
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+.planet.stage-6::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+#planet.stage-7 {
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.7) 85%),
+        url('src/img/earth_stage7.png') !important;
+    background-size: 105% 105% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset -20px -20px 50px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(70, 150, 255, 0.4),
+        0 0 2px 2px rgba(52, 152, 219, 0.2);
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+.planet.stage-7::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+#planet.stage-8 {
+    background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.7) 85%),
+        url('src/img/earth_stage8.png') !important;
+    background-size: 105% 105% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset -20px -20px 50px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(70, 150, 255, 0.4),
+        0 0 2px 2px rgba(52, 152, 219, 0.2);
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+.planet.stage-8::after {
     content: '';
     position: absolute;
     width: 100%;

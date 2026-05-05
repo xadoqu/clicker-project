@@ -186,6 +186,16 @@ const achievementsData = {
     condition: () => state.evoLevel >= 1,
     unlocked: false,
   },
+  "ach-evo2": {
+    name: "Humans",
+    condition: () => state.evoLevel >= 4,
+    unlocked: false,
+  },
+  "ach-evo3": {
+    name: "Berserk",
+    condition: () => state.evoLevel >= 8,
+    unlocked: false,
+  },
 };
 
 function checkAchievements() {
@@ -213,13 +223,17 @@ window.evolutionStages = [
   { threshold: 15000, name: "First Islands", class: "stage-2" },
   { threshold: 30000, name: "Origin of Animals", class: "stage-3" },
   { threshold: 70000, name: "First Hominids", class: "stage-4" },
+  { threshold: 150000, name: "Stone Age", class: "stage-5" },
+  { threshold: 500000, name: "Bronze Age", class: "stage-6" },
+  { threshold: 2000000, name: "Iron Age", class: "stage-7" },
+  { threshold: 10000000, name: "Middle Ages", class: "stage-8" },
 ];
 
 const evoUpgrades = [
   {
     threshold: 5000,
     name: "Deep Sea Life (5000)",
-    buffText: "Vapor Collector x2",
+    buffText: "Manual Pump x2",
     apply: () => {
       state.buildings[1].inc *= 2;
     },
@@ -227,7 +241,7 @@ const evoUpgrades = [
   {
     threshold: 15000,
     name: "First Islands (15000)",
-    buffText: "Cloud Harvester x1.5",
+    buffText: "Deep Sea Diver x1.5",
     apply: () => {
       state.buildings[2].inc *= 1.5;
     },
@@ -235,7 +249,7 @@ const evoUpgrades = [
   {
     threshold: 30000,
     name: "Origin of Animals (30000)",
-    buffText: "Space Station x1.5",
+    buffText: "Atmospheric Condenser x1.5",
     apply: () => {
       state.buildings[3].inc *= 1.5;
     },
@@ -243,9 +257,41 @@ const evoUpgrades = [
   {
     threshold: 70000,
     name: "First Hominids (70000)",
-    buffText: "Click Power x2",
+    buffText: "Global Income x2",
     apply: () => {
       state.globalMultiplier *= 2;
+    },
+  },
+  {
+    threshold: 150000,
+    name: "Stone Age (150000)",
+    buffText: "Cloud Seeding Array x1.5",
+    apply: () => {
+      state.buildings[4].inc *= 1.5;
+    },
+  },
+  {
+    threshold: 500000,
+    name: "Bronze Age (500000)",
+    buffText: "Geothermal Desalinator x1.5",
+    apply: () => {
+      state.buildings[5].inc *= 1.5;
+    },
+  },
+  {
+    threshold: 2000000,
+    name: "Iron Age (2M)",
+    buffText: "Arctic Melter x1.5",
+    apply: () => {
+      state.buildings[6].inc *= 1.5;
+    },
+  },
+  {
+    threshold: 10000000,
+    name: "Middle Ages (10M)",
+    buffText: "Orbital Ice Harvester x1.5",
+    apply: () => {
+      state.buildings[7].inc *= 1.5;
     },
   },
 ];
@@ -433,6 +479,10 @@ const evolutionIcons = {
   1: "🏝️",
   2: " 🙉",
   3: "🧬",
+  4: "🪨",
+  5: "⛏️",
+  6: "⚒️",
+  7: "⚔️",
 };
 
 function createFloatingText(value) {
@@ -443,8 +493,8 @@ function createFloatingText(value) {
 
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
-  const offsetX = (Math.random() - 0.5) * 500;
-  const offsetY = (Math.random() - 0.5) * 200;
+  const offsetX = (Math.random() - 0.5) * 400;
+  const offsetY = (Math.random() - 0.5) * 100;
   const text = document.createElement("div");
   text.className = "floating-text";
   text.innerText = `+${value}`;
