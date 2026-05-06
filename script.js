@@ -481,6 +481,8 @@ function doClick(event) {
   };
   state.res += state.clickPower;
   state.stats.totalClicks++;
+  gameEvents.emit('planetClicked', state.stats.totalClicks);
+  gameEvents.emit('resourceChanged', state.res);
   state.stats.totalResources += state.clickPower;
   createFloatingText(state.clickPower);
   const p = document.getElementById("planet");
@@ -599,6 +601,7 @@ function tick() {
   income *= state.globalMultiplier;
 
   state.res += income;
+  gameEvents.emit('resourceChanged', state.res);
   state.stats.totalResources += income;
   state.stats.timePlayed += 1;
   checkAchievements();
