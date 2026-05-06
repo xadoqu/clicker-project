@@ -132,6 +132,24 @@ let state = {
   },
 };
 
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+  subscribe(event, callback) {
+    if (!this.events[event]) this.events[event] = [];
+    this.events[event].push(callback);
+    return () => {
+      this.events[event] = this.events[event].filter((cb) => cb !== callback);
+    };
+  }
+  emit(event, data) {
+    if (!this.events[event]) return;
+    this.events[event].forEach((callback) => callback(data));
+  }
+}
+const gameEvents = new EventEmitter();
+
 const clickSound = new Audio("src/sfx/click.mp3");
 clickSound.volume = 0.05;
 
