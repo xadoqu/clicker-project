@@ -216,7 +216,7 @@ const achievementsData = {
   },
 };
 
-function checkAchievements() {
+const checkAchievements = withLogging(LogLevel.INFO, function checkAchievements() {
   Object.keys(achievementsData).forEach((id) => {
     let ach = achievementsData[id];
     const element = document.getElementById(id);
@@ -232,8 +232,10 @@ function checkAchievements() {
       element.innerText = "🏆";
       element.title = ach.name;
     }
+    console.log("Checking for new milestones...");
   });
 }
+);
 
 window.evolutionStages = [
   { threshold: 0, name: "Start", class: "stage-0" },

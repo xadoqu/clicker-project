@@ -1,0 +1,8 @@
+{
+  "name": "planet-clicker-engine",
+  "version": "1.0.0",
+  "description": "Just Clicker Game",
+  "main": "script.js",
+  "author": "Yehor, Ilona",
+  "license": "MIT"
+}
