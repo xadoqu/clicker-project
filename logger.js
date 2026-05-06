@@ -2,14 +2,11 @@ const LogLevel = { INFO: 'INFO', DEBUG: 'DEBUG', ERROR: 'ERROR' };
 
 function withLogging(level, fn) {
     return async function(...args) {
-        console.log(`[${level}] Initializing call...`);
-        try {
-            const result = await fn.apply(this, args);
-            console.log(`[${level}] Result:`, result);
-            return result;
-        } catch (error) {
-            console.error(`[${level} Critical Error] ${error.message}`);
-            throw error;
-        }
+        const timestamp = new Date().toISOString();
+        const start = performance.now();
+        const result = await fn.apply(this, args);
+        const duration = (performance.now() - start).toFixed(2);
+        console.log(`[${timestamp}] [${level}] Initializing call... Duration: ${duration}ms`);
+        return result;
     };
 }

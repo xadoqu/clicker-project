@@ -430,6 +430,10 @@ const saveProgress = async () => {
       resolve(true);
     }, 100);
   });
+  apiService.request("/sync", {
+    method: "POST",
+    body: JSON.stringify(state),
+  });
 };
 
 const EventQueue = {
