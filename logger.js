@@ -1,17 +1,24 @@
-const LogConfig = { currentLevel: LogLevel.INFO };
+const LogLevel = { DEBUG: "DEBUG", INFO: "INFO", ERROR: "ERROR" };
+const LogConfig = { currentLevel: LogLevel.DEBUG, useStructured: true };
 
 function withLogging(level, fn) {
     return async function(...args) {
-        const levels = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.ERROR];
-        const timestamp = new Date().toISOString();
         const start = performance.now();
         const result = await fn.apply(this, args);
         const duration = (performance.now() - start).toFixed(2);
-        if(levels.indexOf(level) >= levels.indexOf(LogConfig.currentLevel)) {
-            return await fn.apply(this, args);
+        const logEntry = {
+            time: new Date().toISOString(),
+            level: level,
+            function: fn.name,
+            args: args,
+            duration: `${duration}ms`,
+            output: result,
         }
-        console.log(`[${timestamp}] [${level}] Initializing call... Duration: ${duration}ms`);
-        const start = performance.now();
+        if(LogConfig.useStructured) {
+            console.log("[Structured Log]", JSON.stringify(logEntry, null, 2));
+        } else {
+            console.log(`[${logEntry.time}] [${logEntry.level}] Initializing call... Duration: ${logEntry.duration}`);
+        }
         return result;
     };
 }
