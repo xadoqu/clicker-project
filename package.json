@@ -4,5 +4,6 @@
   "description": "Just Clicker Game",
   "main": "script.js",
   "author": "Yehor, Ilona",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module"
 }
