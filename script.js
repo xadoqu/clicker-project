@@ -464,6 +464,16 @@ window.onload = async () => {
     Object.assign(state, loadedState);
     EventQueue.push("Welcome back, Captain!", "success");
   }
+  gameEvents.subscribe("planetClicked", (clicks) => {
+    console.log("Reactive Log: System detects ${clicks} clicks.");
+    checkAchievements();
+  });
+  gameEvents.subscribe("resourceChanged", (amount) => {
+    if (amount > 1000000 && !state.milestoneReached) {
+      state.milestoneReached = true;
+      EventQueue.push("Global Milestone: 1M Resources reached!", "success");
+    }
+  });
 
   document.getElementById("planet").onclick = doClick;
   render();
@@ -481,8 +491,8 @@ function doClick(event) {
   };
   state.res += state.clickPower;
   state.stats.totalClicks++;
-  gameEvents.emit('planetClicked', state.stats.totalClicks);
-  gameEvents.emit('resourceChanged', state.res);
+  gameEvents.emit("planetClicked", state.stats.totalClicks);
+  gameEvents.emit("resourceChanged", state.res);
   state.stats.totalResources += state.clickPower;
   createFloatingText(state.clickPower);
   const p = document.getElementById("planet");
@@ -601,7 +611,7 @@ function tick() {
   income *= state.globalMultiplier;
 
   state.res += income;
-  gameEvents.emit('resourceChanged', state.res);
+  gameEvents.emit("resourceChanged", state.res);
   state.stats.totalResources += income;
   state.stats.timePlayed += 1;
   checkAchievements();
