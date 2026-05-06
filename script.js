@@ -601,7 +601,6 @@ function tick() {
   state.res += income;
   state.stats.totalResources += income;
   state.stats.timePlayed += 1;
-
   checkAchievements();
   render();
 }
