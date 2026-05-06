@@ -140,7 +140,7 @@ class EventEmitter {
     if (!this.events[event]) this.events[event] = [];
     this.events[event].push(callback);
     return () => {
-      this.events[event] = this.events[event].filter((cb) => cb !== callback);
+      [...this.events[event]].forEach(callback => callback(data));
     };
   }
   emit(event, data) {
@@ -457,6 +457,7 @@ const mCalcCost = memoize((base, rate, count) => {
   return Math.floor(base * Math.pow(rate, count));
 });
 
+let isWelcomeMessageShown = false;
 window.onload = async () => {
   const saved = localStorage.getItem("planetClickerSave");
   if (saved) {
@@ -473,6 +474,19 @@ window.onload = async () => {
       state.milestoneReached = true;
       EventQueue.push("Global Milestone: 1M Resources reached!", "success");
     }
+   
+    const unsubscribeWelcome = gameEvents.subscribe('planetClicked', () => {
+        if (!isWelcomeMessageShown) {
+            EventQueue.push("First steps on the planet taken!", "info");
+            isWelcomeMessageShown = true;
+            if (unsubscribeWelcome) unsubscribeWelcome(); 
+            console.log("Reactive System: Welcome event unsubscribed.");
+        }
+    });
+
+    gameEvents.subscribe("planetClicked", (clicks) => {
+      checkAchievements();
+    });
   });
 
   document.getElementById("planet").onclick = doClick;
