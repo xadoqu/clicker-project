@@ -8,6 +8,9 @@
 </head>
 
 <body>
+    <div id="global-controls" style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+        <button id="mute-btn" class="menu-btn">🔊</button>
+    </div>
     <div class="stars"></div>
     <div class="game-layout">
         <main class="main-area">
@@ -44,6 +47,7 @@
                 <div id="buildings-list"></div>
             </div>
             <div id="achievements-tab" class="tab-content">
+                <h3 class="panel-title">Achievements</h3>
                 <div class="achievements-grid">
                     <div class="achievement-card" id="ach-clicks1k" data-hint="Start clicker">?</div>
                     <div class="achievement-card" id="ach-clicks10k" data-hint="Clicking machine">?</div>
@@ -65,6 +69,10 @@
             </div>
         </aside>
     </div>
+
+    <audio id="bg-music" loop>
+        <source src="src/sfx/background.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="logger.js"></script>
     <script src="api.js"></script>

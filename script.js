@@ -131,6 +131,18 @@ let state = {
     timePlayed: 0,
   },
 };
+state.settings = { isMuted: false };
+const bgMusic = document.getElementById("bg-music");
+const muteBtn = document.getElementById("mute-btn");
+
+function toggleMute() {
+  state.settings.isMuted = !state.settings.isMuted;
+  bgMusic.muted = state.settings.isMuted;
+  muteBtn.innerText = state.settings.isMuted ? "🔇" : "🔊";
+  console.log(`[Settings] Mute: ${state.settings.isMuted}`);
+}
+
+muteBtn.addEventListener("click", toggleMute);
 
 class EventEmitter {
   constructor() {
@@ -140,7 +152,7 @@ class EventEmitter {
     if (!this.events[event]) this.events[event] = [];
     this.events[event].push(callback);
     return () => {
-      [...this.events[event]].forEach(callback => callback(data));
+      [...this.events[event]].forEach((callback) => callback(data));
     };
   }
   emit(event, data) {
@@ -216,25 +228,27 @@ const achievementsData = {
   },
 };
 
-const checkAchievements = withLogging(LogLevel.INFO, function checkAchievements() {
-  Object.keys(achievementsData).forEach((id) => {
-    let ach = achievementsData[id];
-    const element = document.getElementById(id);
-    if (!element) return;
-    if (!ach.unlocked && ach.condition()) {
-      ach.unlocked = true;
-      element.classList.add("unlocked");
-      element.innerText = "🏆";
-      element.title = ach.name;
-      EventQueue.push(`Achievement Unlocked: ${ach.name}`, "success");
-    } else if (ach.unlocked) {
-      element.classList.add("unlocked");
-      element.innerText = "🏆";
-      element.title = ach.name;
-    }
-    console.log("Checking for new milestones...");
-  });
-}
+const checkAchievements = withLogging(
+  LogLevel.INFO,
+  function checkAchievements() {
+    Object.keys(achievementsData).forEach((id) => {
+      let ach = achievementsData[id];
+      const element = document.getElementById(id);
+      if (!element) return;
+      if (!ach.unlocked && ach.condition()) {
+        ach.unlocked = true;
+        element.classList.add("unlocked");
+        element.innerText = "🏆";
+        element.title = ach.name;
+        EventQueue.push(`Achievement Unlocked: ${ach.name}`, "success");
+      } else if (ach.unlocked) {
+        element.classList.add("unlocked");
+        element.innerText = "🏆";
+        element.title = ach.name;
+      }
+      console.log("Checking for new milestones...");
+    });
+  },
 );
 
 window.evolutionStages = [
@@ -480,14 +494,14 @@ window.onload = async () => {
       state.milestoneReached = true;
       EventQueue.push("Global Milestone: 1M Resources reached!", "success");
     }
-   
-    const unsubscribeWelcome = gameEvents.subscribe('planetClicked', () => {
-        if (!isWelcomeMessageShown) {
-            EventQueue.push("First steps on the planet taken!", "info");
-            isWelcomeMessageShown = true;
-            if (unsubscribeWelcome) unsubscribeWelcome(); 
-            console.log("Reactive System: Welcome event unsubscribed.");
-        }
+
+    const unsubscribeWelcome = gameEvents.subscribe("planetClicked", () => {
+      if (!isWelcomeMessageShown) {
+        EventQueue.push("First steps on the planet taken!", "info");
+        isWelcomeMessageShown = true;
+        if (unsubscribeWelcome) unsubscribeWelcome();
+        console.log("Reactive System: Welcome event unsubscribed.");
+      }
     });
 
     gameEvents.subscribe("planetClicked", (clicks) => {
@@ -503,12 +517,16 @@ window.onload = async () => {
 
 const CLICK_SOUND_SRC = "src/sfx/click.mp3";
 function doClick(event) {
-  const sound = new Audio(CLICK_SOUND_SRC);
-  sound.volume = 0.05;
-  sound.play().catch((err) => console.log("Browser blocked click sound:", err));
-  sound.onended = () => {
-    sound.remove();
-  };
+  if (!state.settings.isMuted) {
+    const sound = new Audio(CLICK_SOUND_SRC);
+    sound.volume = 0.05;
+    sound.play().catch((err) => console.log("Blocked:", err));
+    sound.onended = () => sound.remove();
+  }
+  if (bgMusic.paused && !state.settings.isMuted) {
+    bgMusic.play();
+    bgMusic.volume = 0.15;
+  }
   state.res += state.clickPower;
   state.stats.totalClicks++;
   gameEvents.emit("planetClicked", state.stats.totalClicks);
@@ -519,6 +537,7 @@ function doClick(event) {
   p.classList.remove("clicked");
   void p.offsetWidth;
   p.classList.add("clicked");
+  
 
   checkAchievements();
   render();

@@ -657,3 +657,30 @@ body {
     color: #fff;
     text-shadow: 0 0 5px #00d4ff;
 }
+
+#global-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.menu-btn {
+    background: rgba(52, 152, 219, 0.2);;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    border-color: #00d2ff;
+}
+
+.menu-btn:active {
+    transform: scale(0.95);
+}
